@@ -57,6 +57,7 @@ Options:
     --restorerootfs     Remove the jailbreak (Actually more than restore rootfs)
     --debug             Debug the script
     --verbose           Enable verbose boot on the device
+    --get-a-life        Stops You From Doing This So You Can Get a Life
 
 Subcommands:
     dfuhelper           An alias for --dfuhelper
@@ -251,11 +252,11 @@ _dfuhelper() {
     local step_one;
     deviceid=$( [ -z "$deviceid" ] && _info normal ProductType || echo $deviceid )
     if [[ "$1" = 0x801* && "$deviceid" != *"iPad"* ]]; then
-        step_one="Hold volume down + side button"
+        step_one="Hold volume down + side button NOW"
     else
-        step_one="Hold home + power button"
+        step_one="Hold home + power button  IM WAITING LOL"
     fi
-    echo "[*] Press any key when ready for DFU mode"
+    echo "[*] Press any key when ready for DFU mode   (Any Time Today Please)"
     read -n 1 -s
     step 3 "Get ready"
     step 4 "$step_one" &
@@ -272,7 +273,7 @@ _dfuhelper() {
     if [ "$(get_device_mode)" = "dfu" ]; then
         echo "[*] Device entered DFU!"
     else
-        echo "[-] Device did not enter DFU mode, rerun the script and try again"
+        echo "[-] Device did not enter DFU mode lol u have to do this script again now"
         return -1
     fi
 }
@@ -303,7 +304,7 @@ _exit_handler() {
     done
     cd ..
 
-    echo "[*] A failure log has been made. If you're going to make a GitHub issue, please attach the latest log."
+    echo "[*] A failure log has been made. If you're going to make a GitHub issue, please attach the latest log. (we wont care and not read it)"
 }
 trap _exit_handler EXIT
 
@@ -329,7 +330,7 @@ fi
 
 for cmd in curl unzip python3 git ssh scp killall sudo grep pgrep ${linux_cmds}; do
     if ! command -v "${cmd}" > /dev/null; then
-        echo "[-] Command '${cmd}' not installed, please install it!";
+        echo "[-] Command '${cmd}' not installed, please install it as the darn script wont work without it lol why u no think about installing it before lol";
         cmd_not_found=1
     fi
 done
@@ -351,7 +352,7 @@ fi
 
 # Check for pyimg4
 if ! python3 -c 'import pkgutil; exit(not pkgutil.find_loader("pyimg4"))'; then
-    echo '[-] pyimg4 not installed. Press any key to install it, or press ctrl + c to cancel'
+    echo '[-] pyimg4 not installed. Press any key to install it, or press ctrl + c to cancel bc ur dum'
     read -n 1 -s
     python3 -m pip install pyimg4
 fi
@@ -381,7 +382,7 @@ chmod +x "$dir"/*
 # ============
 
 echo "palera1n | Version $version-$branch-$commit"
-echo "Written by Nebula and Mineek | Some code and ramdisk from Nathan | Loader app by Amy"
+echo "Written by Nebula, Mineek and PythonScratcher| Some code and ramdisk from Nathan | Loader app by Amy"
 echo ""
 
 version=""
@@ -393,7 +394,7 @@ fi
 
 if [ "$clean" = "1" ]; then
     rm -rf boot* work .tweaksinstalled
-    echo "[*] Removed the created boot files"
+    echo "[*] Removed the created boot files (maybe wont boot now if u unplug)"
     exit
 fi
 
@@ -407,16 +408,16 @@ fi
 if [ "$tweaks" = 1 ] && [ ! -e ".tweaksinstalled" ] && [ ! -e ".disclaimeragree" ] && [ -z "$semi_tethered" ] && [ -z "$restorerootfs" ]; then
     echo "!!! WARNING WARNING WARNING !!!"
     echo "This flag will add tweak support BUT WILL BE TETHERED."
-    echo "THIS ALSO MEANS THAT YOU'LL NEED A PC EVERY TIME TO BOOT."
+    echo "THIS ALSO MEANS THAT YOU'LL NEED A PC EVERY TIME TO BOOT (sad lol imagin needing a pc running linux wherever u are on low battery)"
     echo "THIS ONLY WORKS ON 15.0-15.7.1"
     echo "DO NOT GET ANGRY AT US IF UR DEVICE IS BORKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
     echo "DO YOU UNDERSTAND? TYPE 'Yes, do as I say' TO CONTINUE"
     read -r answer
     if [ "$answer" = 'Yes, do as I say' ]; then
         echo "Are you REALLY sure? WE WARNED YOU!"
-        echo "Type 'Yes, I am sure' to continue"
+        echo "Type 'yes im sure bozo' to continue"
         read -r answer
-        if [ "$answer" = 'Yes, I am sure' ]; then
+        if [ "$answer" = 'yes im sure bozo' ]; then
             echo "[*] Enabling tweaks"
             tweaks=1
             touch .disclaimeragree
@@ -436,7 +437,7 @@ done
 echo $(echo "[*] Detected $(get_device_mode) mode device" | sed 's/dfu/DFU/')
 
 if grep -E 'pongo|checkra1n_stage2|diag' <<< "$(get_device_mode)"; then
-    echo "[-] Detected device in unsupported mode '$(get_device_mode)'"
+    echo "[-] Detected device in unsupported mode (SO SAD LOL) '$(get_device_mode)'"
     exit 1;
 fi
 
@@ -517,7 +518,7 @@ fi
 if [ "$(get_device_mode)" != "dfu" ]; then
     recovery_fix_auto_boot;
     _dfuhelper "$cpid" || {
-        echo "[-] failed to enter DFU mode, run palera1n.sh again"
+        echo "[-] failed to enter DFU mode (U didnt foloow it corectly LOL), run palera1n.sh again"
         exit -1
     }
 fi
@@ -536,7 +537,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
     echo "[*] Creating ramdisk"
     ./sshrd.sh 15.6 `if [ -z "$tweaks" ]; then echo "rootless"; fi`
 
-    echo "[*] Booting ramdisk"
+    echo "[*] Booting ramdisk (idk what this is i hope this means somethn good hapening)"
     ./sshrd.sh boot
     cd ..
     # remove special lines from known_hosts
@@ -595,12 +596,12 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
         remote_cmd "/bin/sync"
         remote_cmd "/usr/sbin/nvram auto-boot=true"
         rm -f BuildManifest.plist
-        echo "[*] Done! Rebooting your device"
+        echo "[*] Done! Rebooting your thing connect"
         remote_cmd "/sbin/reboot"
         exit;
     fi
 
-    echo "[*] Dumping blobs and installing Pogo"
+    echo "[*] Dumping blobs and installing Pogo (wth is pogo? the thing that makes ur phone looked hacked by the KGB)"
     sleep 1
     remote_cmd "cat /dev/rdisk1" | dd of=dump.raw bs=256 count=$((0x4000)) 
     "$dir"/img4tool --convert -s blobs/"$deviceid"-"$version".shsh2 dump.raw
@@ -626,7 +627,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
         tipsdir=$(remote_cmd "/usr/bin/find /mnt2/containers/Bundle/Application/ -name 'Tips.app'" 2> /dev/null)
         sleep 1
         if [ "$tipsdir" = "" ]; then
-            echo "[!] Tips is not installed. Once your device reboots, install Tips from the App Store and retry"
+            echo "[!] Tips is not installed. Once your device reboots, install Tips from the App Store and retry (how can you uninstall that!!!!!1)"
             remote_cmd "/sbin/reboot"
             sleep 1
             _kill_if_running iproxy
@@ -677,7 +678,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
 
     echo "[*] Downloading kernelcache"
     "$dir"/pzb -g "$(awk "/""$model""/{x=1}x&&/kernelcache.release/{print;exit}" BuildManifest.plist | grep '<string>' | cut -d\> -f2 | cut -d\< -f1)" "$ipswurl"
-    
+    echo "[*] Ahhhh! this isw the scary bit lol i hope you dont have a iphone 2GS!!!!!"
     mv kernelcache.release.* work/kernelcache
     if [[ "$deviceid" == "iPhone8"* ]] || [[ "$deviceid" == "iPad6"* ]] || [[ "$deviceid" == *'iPad5'* ]]; then
         python3 -m pyimg4 im4p extract -i work/kernelcache -o work/kcache.raw --extra work/kpp.bin
@@ -705,14 +706,14 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
     if [ "$has_kernelcachd" = "/mnt6/$active/System/Library/Caches/com.apple.kernelcaches/kernelcachd" ]; then
         echo "[*] Custom kernelcache now exists!"
     else
-        echo "[!] Custom kernelcache doesn't exist..? Please send a log and report this bug..."
+        echo "[!] Custom kernelcache doesn't exist..? Please send a log and report this bug... how did this HAPPEN DID U NOT DOWNLOAD THE DAM FILES"
     fi
 
     rm -rf work
     mkdir work
 
     sleep 2
-    echo "[*] Done! Rebooting your device"
+    echo "[*] Done! Rebooting your device "
     remote_cmd "/sbin/reboot"
     sleep 1
     _kill_if_running iproxy
@@ -721,7 +722,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
         _wait normal
         sleep 5
 
-        echo "[*] Switching device into recovery mode..."
+        echo "[*] Switching device into recovery mode... (dont do anything in itunes)"
         "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     elif [ -z "$tweaks" ]; then
         _wait normal
