@@ -401,7 +401,7 @@ fi
 if [ -z "$tweaks" ] && [ "$semi_tethered" = "1" ]; then
     echo "[!] --semi-tethered may not be used with rootless"
     echo "    Rootless is already semi-tethered"
-    >&2 echo "Hint: to use tweaks on semi-tethered, specify the --tweaks option"
+    >&2 echo "Hint: to use tweaks on semi-tethered, specify the --tweaks option (u dont want it teatherd do ya?)"
     exit 1;
 fi
 
@@ -409,11 +409,11 @@ if [ "$tweaks" = 1 ] && [ ! -e ".tweaksinstalled" ] && [ ! -e ".disclaimeragree"
     echo "!!! WARNING WARNING WARNING !!!"
     echo "This flag will add tweak support BUT WILL BE TETHERED."
     echo "THIS ALSO MEANS THAT YOU'LL NEED A PC EVERY TIME TO BOOT (sad lol imagin needing a pc running linux wherever u are on low battery)"
-    echo "THIS ONLY WORKS ON 15.0-15.7.1"
-    echo "DO NOT GET ANGRY AT US IF UR DEVICE IS BORKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
-    echo "DO YOU UNDERSTAND? TYPE 'Yes, do as I say' TO CONTINUE"
+    echo "THIS ONLY WORKS ON 15.0-15.7.1 (basicly all ios15 versions)"
+    echo "DO NOT GET ANGRY AT US IF UR DEVICE IS BRICKED, IT'S YOUR OWN FAULT AND WE WARNED YOU"
+    echo "DO YOU UNDERSTAND? TYPE 'yes senpai' TO CONTINUE"
     read -r answer
-    if [ "$answer" = 'Yes, do as I say' ]; then
+    if [ "$answer" = 'yes senpai' ]; then
         echo "Are you REALLY sure? WE WARNED YOU!"
         echo "Type 'yes im sure bozo' to continue"
         read -r answer
@@ -452,6 +452,7 @@ if [ "$(get_device_mode)" = "ramdisk" ]; then
     echo "[*] Rebooting device in SSH Ramdisk"
     if [ "$os" = 'Linux' ]; then
         sudo "$dir"/iproxy 2222 22 &
+        echo "[*] Sheeeh i bet u say 'i use linux btw' and u use arch or kali"
     else
         "$dir"/iproxy 2222 22 &
     fi
@@ -466,7 +467,7 @@ if [ "$(get_device_mode)" = "normal" ]; then
     version=$(_info normal ProductVersion)
     arch=$(_info normal CPUArchitecture)
     if [ "$arch" = "arm64e" ]; then
-        echo "[-] palera1n doesn't, and never will, work on non-checkm8 devices"
+        echo "[-] pelera1n doesnt support ur device its a dam non-checkm8 device ITS TOO OLD/NEW BRU (so no work on non-checkm8 devices)"
         exit
     fi
     echo "Hello, $(_info normal ProductType) on $version!"
@@ -481,9 +482,10 @@ echo "[*] Getting device info..."
 cpid=$(_info recovery CPID)
 model=$(_info recovery MODEL)
 deviceid=$(_info recovery PRODUCT)
+echo "[*] We got it (but at what cost) (ur IP) (JK)"
 
 if [ "$dfuhelper" = "1" ]; then
-    echo "[*] Running DFU helper"
+    echo "[*] Running DFU helper (to help the DFU)"
     _dfuhelper "$cpid"
     exit
 fi
@@ -586,7 +588,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
     active=$(remote_cmd "cat /mnt6/active" 2> /dev/null)
 
     if [ "$restorerootfs" = "1" ]; then
-        echo "[*] Removing Jailbreak"
+        echo "[*] Removing Jailbreak (lol are u selling this or has it broke)"
         remote_cmd "/sbin/apfs_deletefs disk0s1s${disk} > /dev/null || true"
         remote_cmd "rm -f /mnt2/jb"
         remote_cmd "rm -rf /mnt2/cache /mnt2/lib"
@@ -619,7 +621,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
             remote_cmd "cp -a /mnt1/. /mnt8/"
             sleep 1
             echo "[*] fakefs created, continuing..."
-            } || echo "[*] Using the old fakefs, run restorerootfs if you need to clean it" 
+            } || echo "[*] Using the old fakefs (lolololololololol), run restorerootfs if you need to clean it" 
         fi
     fi
 
@@ -728,7 +730,7 @@ if [ ! -f blobs/"$deviceid"-"$version".shsh2 ]; then
         _wait normal
         sleep 5
 
-        echo "[*] Switching device into recovery mode..."
+        echo "[*] Switching device into recovery mode... (again)"
         "$dir"/ideviceenterrecovery $(_info normal UniqueDeviceID)
     fi
     _wait recovery
@@ -754,7 +756,7 @@ if [ ! -f boot-"$deviceid"/ibot.img4 ]; then
     "$dir"/img4tool -e -s "$(pwd)"/blobs/"$deviceid"-"$version".shsh2 -m work/IM4M
     cd work
 
-    echo "[*] Downloading BuildManifest"
+    echo "[*] Downloading BuildManifest ijf ifubiofjkbklbjk kh jhbktghvkjhdh gkjhbfjdbjb hgjklghkj"
     "$dir"/pzb -g BuildManifest.plist "$ipswurl"
 
     echo "[*] Downloading and decrypting iBSS"
@@ -765,7 +767,7 @@ if [ ! -f boot-"$deviceid"/ibot.img4 ]; then
     "$dir"/pzb -g "$(awk "/""$model""/{x=1}x&&/iBoot[.]/{print;exit}" BuildManifest.plist | grep '<string>' | cut -d\> -f2 | cut -d\< -f1)" "$ipswurl"
     "$dir"/gaster decrypt "$(awk "/""$model""/{x=1}x&&/iBoot[.]/{print;exit}" BuildManifest.plist | grep '<string>' | cut -d\> -f2 | cut -d\< -f1 | sed 's/Firmware[/]all_flash[/]//')" ibot.dec
 
-    echo "[*] Patching and signing iBSS/iBoot"
+    echo "[*] Patching and signing iBSS/iBoot  (lol we hecking u now)"
     "$dir"/iBoot64Patcher iBSS.dec iBSS.patched
     if [ "$semi_tethered" = "1" ]; then
         if [ "$verbose" = "1" ]; then
@@ -842,7 +844,9 @@ echo "Done!"
 echo "The device should now boot to iOS"
 echo "If this is your first time jailbreaking, open Tips app and then press Install"
 echo "Otherwise, open Tips app and press Do All in the Tools section"
-echo "If you have any issues, please join the Discord server and ask for help: https://dsc.gg/palera1n"
-echo "Enjoy!"
+echo "If you have any issues, please ask for help: http://pythonscratcher.ml/uwu and we wont help"
+echo "Enjoy Having No Life!"
+echo "your ip is 127.0.0.1"
+echo "the KGB, MI5, MI6, FBI and CIA are now montioring your device cameras and microphone you cannot disable this!!!111111"
 
 } | tee logs/"$(date +%T)"-"$(date +%F)"-"$(uname)"-"$(uname -r)".log
