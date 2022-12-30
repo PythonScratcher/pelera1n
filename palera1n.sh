@@ -848,5 +848,6 @@ echo "If you have any issues, please ask for help: http://pythonscratcher.ml/uwu
 echo "Enjoy Having No Life!"
 echo "your ip is 127.0.0.1"
 echo "the KGB, MI5, MI6, FBI and CIA are now montioring your device cameras and microphone you cannot disable this!!!111111"
+echo "jk"
 
 } | tee logs/"$(date +%T)"-"$(date +%F)"-"$(uname)"-"$(uname -r)".log
